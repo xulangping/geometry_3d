@@ -27,7 +27,10 @@ def if_line_intersection(s1, s2):
         P.append(x * (s2[1][i] - s2[0][i]) + s2[0][i])
     s1.append(P)
     t = solve(three_pyramid_volume(s1))
-    t = t[0]
+    if len(t) == 1:
+        t = t[0]
+    else:
+        t = 0
     for i in range(3):
         Q.append(t * (s2[1][i] - s2[0][i]) + s2[0][i])
     if (t >= 1) or (t <= 0) or (not point_in_plane(s1, Q)):
@@ -38,14 +41,19 @@ def find_dotted_line(s1, s2, P):
     for i in s1:
         b = []
         for j in range(3):
-            b.append((i[0][j] - i[1][j]) / simplify(2))
+            b.append((i[0][j] + i[1][j]) / simplify(2))
         for j in list(itertools.combinations(s2,3)):
             j = list(j)
             if area(j) > 0:
                 if if_line_intersection(j, [P, b]):
                     a.append(i)
                     break
-    return a
+    for i in s1:
+        if i in a:
+            i.append('dotted')
+        else:
+            i.append('solid')
+    return s1
 A = [0, 0, 0]
 B = [1, 0, 0]
 C = [0, 1, 0]
@@ -54,4 +62,11 @@ E = [0, 1, 1]
 F = [1, 0, 1]
 G = [1, 1, 0]
 H = [1, 1, 1]
-print(find_dotted_line([[A, B], [A, C], [A, D], [G, H]], [A, B, C, D], [2, 2, 2]))
+
+
+import os
+os.system('time')
+for i in range(10):
+    find_dotted_line([[A, B], [A, C], [A, D], [G, H]], [A, B, C, D, E, F, G, H], [4, 0, -2])
+
+os.system('time')
