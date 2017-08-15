@@ -47,12 +47,15 @@ def if_line_intersection(s1, s2):
     if (t >= 1) or (t <= 0) or (not point_in_plane(s1, Q)):
         return False
     return True
-def find_dotted_line(s1, s2, P):
+def find_dotted_line(s1, points, P):
     a = []
+    s2 = []
+    for i in points.values():
+        s2.append(i)
     for i in s1:
         b = []
         for j in range(3):
-            b.append((i[0][j] + i[1][j]) / simplify(2))
+            b.append((points[i[0]][j] + points[i[1]][j]) / simplify(2))
         for j in list(itertools.combinations(s2,3)):
             j = list(j)
             if area(j) > 0:
@@ -65,18 +68,5 @@ def find_dotted_line(s1, s2, P):
         else:
             i.append('solid')
     return s1
-A = [0, 0, 0]
-B = [1, 0, 0]
-C = [0, 1, 0]
-D = [0, 0, 1]
-E = [0, 1, 1]
-F = [1, 0, 1]
-G = [1, 1, 0]
-H = [1, 1, 1]
-
-import datetime
-starttime = datetime.datetime.now()
-for i in range(10000):
-    find_dotted_line([[A, B], [A, C], [A, D], [G, H]], [A, B, C, D, E, F, G, H], [4, 4, 4])
-endtime = datetime.datetime.now()
-print(endtime - starttime)
+points = {'A': [0, 0, 0], 'B': [1, 0, 0], 'C': [0, 1, 0], 'D': [0, 0, 1], 'E': [0, 1, 1], 'F': [1, 0, 1], 'G': [1, 1, 0], 'H': [1, 1, 1]}
+print(find_dotted_line([['A', 'B'], ['A', 'C'], ['A', 'D'], ['G', 'H']], points, [4, 4, 4]))
