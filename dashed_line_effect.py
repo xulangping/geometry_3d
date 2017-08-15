@@ -74,8 +74,9 @@ F = [1, 0, 1]
 G = [1, 1, 0]
 H = [1, 1, 1]
 
-
-
-print(find_dotted_line([[A, B], [A, C], [A, D], [G, H]], [A, B, C, D, E, F, G, H], [4, 4, 4]))
-
-
+import datetime
+starttime = datetime.datetime.now()
+for i in range(10000):
+    find_dotted_line([[A, B], [A, C], [A, D], [G, H]], [A, B, C, D, E, F, G, H], [4, 4, 4])
+endtime = datetime.datetime.now()
+print(endtime - starttime)
