@@ -1,6 +1,6 @@
 from sympy import *
 import itertools
-
+infinitesimal = 0.000001
 x = symbols('x')
 
 
@@ -26,7 +26,7 @@ def three_pyramid_volume(s):
 
 
 def point_in_plane(s, P):
-    if area([s[0], s[1], P]) + area([s[0], s[2], P]) + area([s[2], s[1], P]) == area(s):
+    if abs(area([s[0], s[1], P]) + area([s[0], s[2], P]) + area([s[2], s[1], P]) - area(s)) < infinitesimal:
         return True
     else:
         return False
@@ -39,10 +39,10 @@ def if_line_intersection(s1, s2):
     [x3, y3, z3] = s1[2]
     [x4, y4, z4] = s2[0]
     [x5, y5, z5] = s2[1]
-    if (x1 * y2 * z4 - x1 * y2 * z5 - x1 * y3 * z4 + x1 * y3 * z5 - x1 * y4 * z2 + x1 * y4 * z3 + x1 * y5 * z2 - x1 * y5 * z3 - x2 * y1 * z4 + x2 * y1 * z5 +
+    if abs(x1 * y2 * z4 - x1 * y2 * z5 - x1 * y3 * z4 + x1 * y3 * z5 - x1 * y4 * z2 + x1 * y4 * z3 + x1 * y5 * z2 - x1 * y5 * z3 - x2 * y1 * z4 + x2 * y1 * z5 +
         x2 * y3 * z4 - x2 * y3 * z5 + x2 * y4 * z1 - x2 * y4 * z3 - x2 * y5 * z1 + x2 * y5 * z3 + x3 * y1 * z4 - x3 * y1 * z5 - x3 * y2 * z4 +
         x3 * y2 * z5 - x3 * y4 * z1 + x3 * y4 * z2 + x3 * y5 * z1 - x3 * y5 * z2 + x4 * y1 * z2 - x4 * y1 * z3 - x4 * y2 * z1 + x4 * y2 * z3 +
-        x4 * y3 * z1 - x4 * y3 * z2 - x5 * y1 * z2 + x5 * y1 * z3 + x5 * y2 * z1 - x5 * y2 * z3 - x5 * y3 * z1 + x5 * y3 * z2) != 0:
+        x4 * y3 * z1 - x4 * y3 * z2 - x5 * y1 * z2 + x5 * y1 * z3 + x5 * y2 * z1 - x5 * y2 * z3 - x5 * y3 * z1 + x5 * y3 * z2) > infinitesimal:
         t = (
             x1 * y2 * z3 - x1 * y2 * z5 - x1 * y3 * z2 + x1 * y3 * z5 + x1 * y5 * z2 - x1 * y5 * z3 - x2 * y1 * z3 + x2 * y1 * z5 + x2 * y3 * z1 - x2 * y3 * z5 -
             x2 * y5 * z1 + x2 * y5 * z3 + x3 * y1 * z2 - x3 * y1 * z5 - x3 * y2 * z1 + x3 * y2 * z5 + x3 * y5 * z1 - x3 * y5 * z2 - x5 * y1 * z2 + x5 * y1 * z3 +
@@ -55,7 +55,7 @@ def if_line_intersection(s1, s2):
             x5 * y1 * z2 + x5 * y1 * z3 + x5 * y2 * z1 - x5 * y2 * z3 - x5 * y3 * z1 + x5 * y3 * z2)
     else:
         return False
-    if abs(t - 1) < 0.000001 or abs(t) < 0.0000001:
+    if abs(t - 1) < infinitesimal or abs(t) < infinitesimal:
         return False
     for i in range(3):
         Q.append(t * (s2[0][i] - s2[1][i]) + s2[1][i])
@@ -75,7 +75,7 @@ def find_dotted_line(s1, points, P):
             b.append((points[i[0]][j] + points[i[1]][j]) / simplify(2))
         for j in list(itertools.combinations(s2, 3)):
             j = list(j)
-            if area(j) > 0:
+            if abs(area(j)) > infinitesimal:
                 if if_line_intersection(j, [P, b]):
                     a.append(i)
                     break
