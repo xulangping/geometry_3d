@@ -54,7 +54,9 @@ def if_line_intersection(s1, s2):
             x4 * y1 * z2 - x4 * y1 * z3 - x4 * y2 * z1 + x4 * y2 * z3 + x4 * y3 * z1 - x4 * y3 * z2 -
             x5 * y1 * z2 + x5 * y1 * z3 + x5 * y2 * z1 - x5 * y2 * z3 - x5 * y3 * z1 + x5 * y3 * z2)
     else:
-        t = 0
+        return False
+    if abs(t - 1) < 0.000001 or abs(t) < 0.0000001:
+        return False
     for i in range(3):
         Q.append(t * (s2[0][i] - s2[1][i]) + s2[1][i])
     if (t >= 1) or (t <= 0) or (not point_in_plane(s1, Q)):
